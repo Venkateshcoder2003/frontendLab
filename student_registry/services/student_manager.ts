@@ -1,64 +1,65 @@
-import { User } from "../models/user"; //Import User interface
+import { Student } from "../models/student"; //Import Student interface
 import { Logger } from "../utils/logger"; //import Logger
 import Course from "../models/course"; //Import Course enum
 
-export class UserManager {
-  private static instance: UserManager; //Singleton instance
-  private users: User[]; //Array to hold student objects
+export class StudentManager {
+  private static instance: StudentManager; //Singleton instance
+  private students: Student[]; //Array to hold student objects
 
   //Private constructor to ensure that no one creates object
   private constructor() {}
 
   //Singleton method to share single instance across entire application
-  static getInstance(): UserManager {
-    if (!UserManager.instance) {
-      UserManager.instance = new UserManager();
+  static getInstance(): StudentManager {
+    if (!StudentManager.instance) {
+      StudentManager.instance = new StudentManager();
     }
-    return UserManager.instance;
+    return StudentManager.instance;
   }
 
-  //Set users array while loading from disk
-  setUsers(users: User[]): void {
-    this.users = users;
-    if (this.users.length > 1) {
-      this.sortUsersBy();
+  //Set students array while loading from disk
+  setStudents(student: Student[]): void {
+    this.students = student;
+    if (this.students.length > 1) {
+      this.sortStudentsBy();
     }
   }
 
   //Get list of all students
-  getUsers(): User[] {
-    return this.users;
+  getStudents(): Student[] {
+    return this.students;
   }
 
   //Add new student to the list
-  addUser(user: User): boolean {
+  addStudent(student: Student): boolean {
     let exists = false;
-    for (let u of this.users) {
-      if (u.rollNumber === user.rollNumber) {
+    for (let stu of this.students) {
+      if (stu.rollNumber === student.rollNumber) {
         exists = true;
         break;
       }
     }
+
     if (exists) {
       Logger.error("Roll number already exists.");
       return true;
     } else {
-      this.users.push(user);
-      this.sortUsersBy();
+      this.students.push(student);
+      this.sortStudentsBy();
     }
   }
 
   //Delete student record  from the list using Binary Search
-  deleteUser(rollNumber: number): boolean {
+  deleteStudent(rollNumber: number): boolean {
     let left = 0;
-    let right = this.users.length - 1;
+    let right = this.students.length - 1;
 
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
-      const midRollNumber = this.users[mid].rollNumber;
+      const midRollNumber = this.students[mid].rollNumber;
 
       if (midRollNumber === rollNumber) {
-        this.users.splice(mid, 1); // Remove user at index mid
+        this.students.splice(mid, 1); // Remove student at index mid
         return true;
       } else if (midRollNumber < rollNumber) {
         left = mid + 1;
@@ -70,8 +71,8 @@ export class UserManager {
   }
 
   //Sort students by given field (like name, age) and type (asc or desc)
-  sortUsersBy(field: any = "fullName", type: any = "asc"): any {
-    this.users.sort((a, b) => {
+  sortStudentsBy(field: any = "fullName", type: any = "asc"): any {
+    this.students.sort((a, b) => {
       let comparision = 0;
 
       switch (field) {
@@ -100,8 +101,8 @@ export class UserManager {
   }
 
   //Print all student Details
-  displayUsers(): void {
-    if (this.users.length === 0) {
+  displayStudents(): void {
+    if (this.students.length === 0) {
       Logger.print("No Student Details to Display.");
       return;
     }
@@ -114,12 +115,12 @@ export class UserManager {
       "=============================================================="
     );
 
-    for (const user of this.users) {
-      const roll = String(user.rollNumber).padEnd(6, " ");
-      const name = user.fullName.padEnd(14, " ");
-      const age = String(user.age).padEnd(3, " ");
-      const address = user.address.padEnd(14, " ");
-      const courses = user.courses; // assuming it's an array
+    for (const student of this.students) {
+      const roll = String(student.rollNumber).padEnd(6, " ");
+      const name = student.fullName.padEnd(14, " ");
+      const age = String(student.age).padEnd(3, " ");
+      const address = student.address.padEnd(14, " ");
+      const courses = student.courses; // assuming it's an array
 
       Logger.print(`${roll} | ${name} | ${age} | ${address} | ${courses}`);
     }

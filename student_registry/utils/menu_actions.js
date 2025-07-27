@@ -41,33 +41,33 @@ exports.handleDisplay = handleDisplay;
 exports.handleDelete = handleDelete;
 exports.handleSave = handleSave;
 exports.handleExit = handleExit;
-var user_manager_1 = require("../services/user_manager");
+var student_manager_1 = require("../services/student_manager");
 var data_serializer_1 = require("../services/data_serializer");
-var user_factory_1 = require("../utils/user_factory");
+var student_object_creater_1 = require("../utils/student_object_creater");
 var input_handler_1 = require("../utils/input_handler");
 var input_validator_1 = require("../utils/input_validator");
 var logger_1 = require("../utils/logger");
-var userManager = user_manager_1.UserManager.getInstance();
+var studentManager = student_manager_1.StudentManager.getInstance();
 var dataSerializer = data_serializer_1.DataSerializer.getInstance();
-var userFactory = new user_factory_1.UserFactory();
-//Handles logic for adding a new user
+var studentFactory = new student_object_creater_1.StudentFactory();
+//Handles logic for adding a new student
 function handleAdd() {
     return __awaiter(this, void 0, void 0, function () {
-        var userInput, validatedData, user, addResult;
+        var studentInput, validatedData, student, addResult;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, input_handler_1.InputHandler.getUserInput()];
+                case 0: return [4 /*yield*/, input_handler_1.InputHandler.getStudentInput()];
                 case 1:
-                    userInput = _a.sent();
-                    return [4 /*yield*/, input_validator_1.InputValidator.validateAndGetUserData(userInput)];
+                    studentInput = _a.sent();
+                    return [4 /*yield*/, input_validator_1.InputValidator.validateAndGetStudentData(studentInput)];
                 case 2:
                     validatedData = _a.sent();
-                    user = userFactory.createUser(validatedData.fullName, validatedData.age, validatedData.address, validatedData.rollNumber, validatedData.courses);
-                    addResult = userManager.addUser(user);
+                    student = studentFactory.createStudent(validatedData.fullName, validatedData.age, validatedData.address, validatedData.rollNumber, validatedData.courses);
+                    addResult = studentManager.addStudent(student);
                     if (!addResult) {
-                        dataSerializer.saveDataToDisk(userManager.getUsers());
-                        logger_1.Logger.info("User Added Successfully");
-                        logger_1.Logger.log(user);
+                        dataSerializer.saveDataToDisk(studentManager.getStudents());
+                        logger_1.Logger.info("Student Added Successfully");
+                        logger_1.Logger.log(student);
                     }
                     return [2 /*return*/];
             }
@@ -75,21 +75,21 @@ function handleAdd() {
     });
 }
 /**
- *Handles display of all user data.
+ *Handles display of all student data.
  * If custom sort is selected, asks for sort field and type
  * Otherwise, shows default sorting (by name and roll number)
  */
 function handleDisplay() {
     return __awaiter(this, void 0, void 0, function () {
-        var wantCustomSort, usersFromFile, sortFieldInput, sortFieldValidation, sortTypeInput, sortTypeValidation, usersFromFile;
+        var wantCustomSort, studentsFromFile, sortFieldInput, sortFieldValidation, sortTypeInput, sortTypeValidation, studentsFromFile;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, input_handler_1.InputHandler.getYesNoInput("Do you want to sort on data: ")];
                 case 1:
                     wantCustomSort = _a.sent();
                     if (!wantCustomSort) return [3 /*break*/, 4];
-                    usersFromFile = dataSerializer.loadDataFromDisk();
-                    if (usersFromFile.length === 0) {
+                    studentsFromFile = dataSerializer.loadDataFromDisk();
+                    if (studentsFromFile.length === 0) {
                         logger_1.Logger.info("No Student Records found in the database.");
                         return [2 /*return*/];
                     }
@@ -109,27 +109,27 @@ function handleDisplay() {
                         logger_1.Logger.error(sortTypeValidation.error);
                         return [2 /*return*/];
                     }
-                    //Perform custom sort and display users
-                    userManager.sortUsersBy(sortFieldValidation.value, sortTypeValidation.value);
+                    //Perform custom sort and display students
+                    studentManager.sortStudentsBy(sortFieldValidation.value, sortTypeValidation.value);
                     logger_1.Logger.info("Sorted by ".concat(sortFieldValidation.value, " in ").concat(sortTypeValidation.value, "."));
-                    userManager.displayUsers();
+                    studentManager.displayStudents();
                     return [3 /*break*/, 5];
                 case 4:
-                    usersFromFile = dataSerializer.loadDataFromDisk();
-                    if (usersFromFile.length === 0) {
+                    studentsFromFile = dataSerializer.loadDataFromDisk();
+                    if (studentsFromFile.length === 0) {
                         logger_1.Logger.info("No Student Records found in the database.");
                         return [2 /*return*/];
                     }
                     logger_1.Logger.info("Here is your data with default Sorting By Name and Roll Number: ");
-                    userManager.setUsers(usersFromFile);
-                    userManager.displayUsers();
+                    studentManager.setStudents(studentsFromFile);
+                    studentManager.displayStudents();
                     _a.label = 5;
                 case 5: return [2 /*return*/];
             }
         });
     });
 }
-//Handles deletion of a user by roll number
+//Handles deletion of a student by roll number
 function handleDelete() {
     return __awaiter(this, void 0, void 0, function () {
         var rollNumberInput, rollNumberValidation, deleted;
@@ -143,28 +143,28 @@ function handleDelete() {
                         logger_1.Logger.error(rollNumberValidation.error);
                         return [2 /*return*/];
                     }
-                    userManager.sortUsersBy();
-                    deleted = userManager.deleteUser(rollNumberValidation.value);
-                    dataSerializer.saveDataToDisk(userManager.getUsers());
+                    studentManager.sortStudentsBy();
+                    deleted = studentManager.deleteStudent(rollNumberValidation.value);
+                    dataSerializer.saveDataToDisk(studentManager.getStudents());
                     if (deleted) {
-                        logger_1.Logger.info("User With Roll Number ".concat(rollNumberValidation.value, " Deleted Successfully"));
-                        userManager.displayUsers();
+                        logger_1.Logger.info("Student With Roll Number ".concat(rollNumberValidation.value, " Deleted Successfully"));
+                        studentManager.displayStudents();
                     }
                     else {
-                        logger_1.Logger.info("User data with roll number ".concat(rollNumberValidation.value, " is Not Present"));
+                        logger_1.Logger.info("Student data with roll number ".concat(rollNumberValidation.value, " is Not Present"));
                     }
                     return [2 /*return*/];
             }
         });
     });
 }
-//Handles saving all current user data to disk
+//Handles saving all current student data to disk
 function handleSave() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            userManager.sortUsersBy();
-            dataSerializer.saveDataToDisk(userManager.getUsers());
-            logger_1.Logger.info("User data Updated in Student Registry");
+            studentManager.sortStudentsBy();
+            dataSerializer.saveDataToDisk(studentManager.getStudents());
+            logger_1.Logger.info("Student data Updated in Student Registry");
             return [2 /*return*/];
         });
     });
@@ -184,8 +184,8 @@ function handleExit() {
                 case 1:
                     save = _a.sent();
                     if (save) {
-                        dataSerializer.saveDataToDisk(userManager.getUsers());
-                        logger_1.Logger.info("User Data saved.");
+                        dataSerializer.saveDataToDisk(studentManager.getStudents());
+                        logger_1.Logger.info("Student Data saved.");
                     }
                     input_handler_1.InputHandler.close();
                     return [2 /*return*/];

@@ -1,15 +1,15 @@
 //Importing the necessary models
-import { User } from "../models/user";
+import { Student } from "../models/student";
 
 //Factory Class responsible for creatig student object
-export class UserFactory {
-  createUser(
+export class StudentFactory {
+  createStudent(
     fullName: string,
     age: number,
     address: string,
     rollNumber: number,
     courses: any
-  ): User {
+  ): Student {
     return {
       fullName: fullName.trim(),
       age,

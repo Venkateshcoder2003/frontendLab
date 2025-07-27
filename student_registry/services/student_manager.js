@@ -1,35 +1,35 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserManager = void 0;
+exports.StudentManager = void 0;
 var logger_1 = require("../utils/logger"); //import Logger
-var UserManager = /** @class */ (function () {
+var StudentManager = /** @class */ (function () {
     //Private constructor to ensure that no one creates object
-    function UserManager() {
+    function StudentManager() {
     }
     //Singleton method to share single instance across entire application
-    UserManager.getInstance = function () {
-        if (!UserManager.instance) {
-            UserManager.instance = new UserManager();
+    StudentManager.getInstance = function () {
+        if (!StudentManager.instance) {
+            StudentManager.instance = new StudentManager();
         }
-        return UserManager.instance;
+        return StudentManager.instance;
     };
-    //Set users array while loading from disk
-    UserManager.prototype.setUsers = function (users) {
-        this.users = users;
-        if (this.users.length > 1) {
-            this.sortUsersBy();
+    //Set students array while loading from disk
+    StudentManager.prototype.setStudents = function (student) {
+        this.students = student;
+        if (this.students.length > 1) {
+            this.sortStudentsBy();
         }
     };
     //Get list of all students
-    UserManager.prototype.getUsers = function () {
-        return this.users;
+    StudentManager.prototype.getStudents = function () {
+        return this.students;
     };
     //Add new student to the list
-    UserManager.prototype.addUser = function (user) {
+    StudentManager.prototype.addStudent = function (student) {
         var exists = false;
-        for (var _i = 0, _a = this.users; _i < _a.length; _i++) {
-            var u = _a[_i];
-            if (u.rollNumber === user.rollNumber) {
+        for (var _i = 0, _a = this.students; _i < _a.length; _i++) {
+            var stu = _a[_i];
+            if (stu.rollNumber === student.rollNumber) {
                 exists = true;
                 break;
             }
@@ -39,19 +39,19 @@ var UserManager = /** @class */ (function () {
             return true;
         }
         else {
-            this.users.push(user);
-            this.sortUsersBy();
+            this.students.push(student);
+            this.sortStudentsBy();
         }
     };
     //Delete student record  from the list using Binary Search
-    UserManager.prototype.deleteUser = function (rollNumber) {
+    StudentManager.prototype.deleteStudent = function (rollNumber) {
         var left = 0;
-        var right = this.users.length - 1;
+        var right = this.students.length - 1;
         while (left <= right) {
             var mid = Math.floor((left + right) / 2);
-            var midRollNumber = this.users[mid].rollNumber;
+            var midRollNumber = this.students[mid].rollNumber;
             if (midRollNumber === rollNumber) {
-                this.users.splice(mid, 1); // Remove user at index mid
+                this.students.splice(mid, 1); // Remove student at index mid
                 return true;
             }
             else if (midRollNumber < rollNumber) {
@@ -64,10 +64,10 @@ var UserManager = /** @class */ (function () {
         return false;
     };
     //Sort students by given field (like name, age) and type (asc or desc)
-    UserManager.prototype.sortUsersBy = function (field, type) {
+    StudentManager.prototype.sortStudentsBy = function (field, type) {
         if (field === void 0) { field = "fullName"; }
         if (type === void 0) { type = "asc"; }
-        this.users.sort(function (a, b) {
+        this.students.sort(function (a, b) {
             var comparision = 0;
             switch (field) {
                 case "rollNumber":
@@ -99,25 +99,25 @@ var UserManager = /** @class */ (function () {
         });
     };
     //Print all student Details
-    UserManager.prototype.displayUsers = function () {
-        if (this.users.length === 0) {
+    StudentManager.prototype.displayStudents = function () {
+        if (this.students.length === 0) {
             logger_1.Logger.print("No Student Details to Display.");
             return;
         }
         logger_1.Logger.print("\n==============================================================");
         logger_1.Logger.print("RollNo | Name           | Age | Address        | Courses");
         logger_1.Logger.print("==============================================================");
-        for (var _i = 0, _a = this.users; _i < _a.length; _i++) {
-            var user = _a[_i];
-            var roll = String(user.rollNumber).padEnd(6, " ");
-            var name_1 = user.fullName.padEnd(14, " ");
-            var age = String(user.age).padEnd(3, " ");
-            var address = user.address.padEnd(14, " ");
-            var courses = user.courses; // assuming it's an array
+        for (var _i = 0, _a = this.students; _i < _a.length; _i++) {
+            var student = _a[_i];
+            var roll = String(student.rollNumber).padEnd(6, " ");
+            var name_1 = student.fullName.padEnd(14, " ");
+            var age = String(student.age).padEnd(3, " ");
+            var address = student.address.padEnd(14, " ");
+            var courses = student.courses; // assuming it's an array
             logger_1.Logger.print("".concat(roll, " | ").concat(name_1, " | ").concat(age, " | ").concat(address, " | ").concat(courses));
         }
         logger_1.Logger.print("==============================================================");
     };
-    return UserManager;
+    return StudentManager;
 }());
-exports.UserManager = UserManager;
+exports.StudentManager = StudentManager;

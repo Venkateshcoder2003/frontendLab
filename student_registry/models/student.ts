@@ -1,7 +1,7 @@
 //Importing the Course enum
 import Course from "./course";
-//Defining the structure of a 'User' object using Interface.
-export interface User {
+//Defining the structure of a 'Student' object using Interface.
+export interface Student {
   fullName: string;
   age: number;
   address: string;

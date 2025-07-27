@@ -1,10 +1,10 @@
 //Import required modules and interfaces
 import Course from "../models/course";
-import { InputHandler, UserInputData } from "./input_handler";
+import { InputHandler, StudentInputData } from "./input_handler";
 import { Logger } from "./logger";
 
-//Interface to represent validated user data after all input validations
-export interface ValidatedUserData {
+//Interface to represent validated student data after all input validations
+export interface ValidatedStudentData {
   fullName: string;
   age: number;
   address: string;
@@ -19,27 +19,27 @@ export interface ValidationResult<T> {
   error?: string;
 }
 
-//Class responsible for validating user input
+//Class responsible for validating student input
 export class InputValidator {
   //Validates all fields and returns fully validated data
-  static async validateAndGetUserData(
-    userInput: UserInputData
-  ): Promise<ValidatedUserData> {
-    const validatedData: Partial<ValidatedUserData> = {};
+  static async validateAndGetStudentData(
+    studentInput: StudentInputData
+  ): Promise<ValidatedStudentData> {
+    const validatedData: Partial<ValidatedStudentData> = {};
 
-    await this.validateName(userInput.fullName || "", validatedData);
-    await this.validateAge(userInput.age || "", validatedData);
-    await this.validateAddress(userInput.address || "", validatedData);
-    await this.validateRollNumber(userInput.rollNumber || "", validatedData);
-    await this.validateCourses(userInput.courses || "", validatedData);
+    await this.validateName(studentInput.fullName || "", validatedData);
+    await this.validateAge(studentInput.age || "", validatedData);
+    await this.validateAddress(studentInput.address || "", validatedData);
+    await this.validateRollNumber(studentInput.rollNumber || "", validatedData);
+    await this.validateCourses(studentInput.courses || "", validatedData);
 
-    return validatedData as ValidatedUserData;
+    return validatedData as ValidatedStudentData;
   }
 
   //validate name
   static async validateName(
     input: string,
-    validatedData: Partial<ValidatedUserData>
+    validatedData: Partial<ValidatedStudentData>
   ): Promise<void> {
     const name = input.trim();
     if (name.length > 0) {
@@ -60,7 +60,7 @@ export class InputValidator {
   //Validate age
   static async validateAge(
     input: string,
-    validatedData: Partial<ValidatedUserData>
+    validatedData: Partial<ValidatedStudentData>
   ): Promise<void> {
     const age = parseInt(input.trim());
     if (age >= 0 && !isNaN(age)) {
@@ -81,7 +81,7 @@ export class InputValidator {
   //Validate address
   static async validateAddress(
     input: string,
-    validatedData: Partial<ValidatedUserData>
+    validatedData: Partial<ValidatedStudentData>
   ): Promise<void> {
     const address = input.trim();
     if (address.length > 0) {
@@ -102,7 +102,7 @@ export class InputValidator {
   //validate rollNumber
   static async validateRollNumber(
     input: string,
-    validatedData: Partial<ValidatedUserData>
+    validatedData: Partial<ValidatedStudentData>
   ): Promise<void> {
     const rollNumber = parseInt(input.trim());
     if (rollNumber >= 0 && !isNaN(rollNumber)) {
@@ -141,7 +141,7 @@ export class InputValidator {
   //validate courses
   static async validateCourses(
     input: string,
-    validatedData: Partial<ValidatedUserData>
+    validatedData: Partial<ValidatedStudentData>
   ): Promise<void> {
     const coursesResult = this.processCoursesInput(input);
     if (coursesResult) {
@@ -149,7 +149,7 @@ export class InputValidator {
       return;
     }
 
-    // Invalid - ask for re-input
+    //Invalid - ask for re-input
     while (!validatedData.courses) {
       const newInput = await InputHandler.askQuery(
         "Re-enter Courses A-F (Comma Separated): "
@@ -173,7 +173,7 @@ export class InputValidator {
       }
     }
 
-    //Number of courses should be 4
+    //Number of courses should be 4 
     if (inputCourses.length !== 4) {
       Logger.info(
         `Error: You must enter exactly 4 courses. You entered ${inputCourses.length}.`
@@ -232,7 +232,7 @@ export class InputValidator {
     }
   }
 
-  //Validate user choice
+  //Validate student choice
   static validateChoice(input: string): number | null {
     const choice = parseInt(input.trim());
     return choice >= 1 && choice <= 5 ? choice : null;

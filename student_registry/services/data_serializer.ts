@@ -1,13 +1,13 @@
 //Import required modules
 import * as fs from "fs";
 import * as path from "path";
-import { User } from "../models/user"; //Import the user interface/model
+import { Student } from "../models/student"; //Import the student interface/model
 import { Logger } from "../utils/logger"; //Import logging utility for logging messages
 
 //Dataserializer is a singleton class that is used to save and load data from a JSON file
 export class DataSerializer {
   private static instance: DataSerializer; //Singleton instance
-  private filePath = "./data/user_data.json"; //Path where data is stored
+  private filePath = "./data/student_data.json"; //Path where data is stored
 
   //Private constructor to prevent direct object creation
   private constructor() {}
@@ -21,16 +21,20 @@ export class DataSerializer {
   }
 
   //saves data to disk
-  saveDataToDisk(users: User[]): void {
+  saveDataToDisk(students: Student[]): void {
     try {
-      fs.writeFileSync(this.filePath, JSON.stringify(users, null, 2), "utf-8");
+      fs.writeFileSync(
+        this.filePath,
+        JSON.stringify(students, null, 2),
+        "utf-8"
+      );
     } catch (error) {
       Logger.error(`Failed to save data: ${error}`);
     }
   }
 
   //Load data from disk
-  loadDataFromDisk(): User[] {
+  loadDataFromDisk(): Student[] {
     try {
       if (!fs.existsSync(this.filePath)) {
         return [];

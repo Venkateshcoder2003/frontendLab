@@ -1,7 +1,7 @@
 //Import required classes and utility functions
-import { UserManager } from "../services/user_manager";
+import { StudentManager } from "../services/student_manager";
 import { DataSerializer } from "../services/data_serializer";
-import { UserFactory } from "../utils/user_factory";
+import { StudentFactory } from "../utils/student_object_creater";
 import { InputHandler } from "../utils/input_handler";
 import { InputValidator } from "../utils/input_validator";
 import { Logger } from "../utils/logger";
@@ -10,43 +10,43 @@ import { handleAdd, handleDisplay, handleDelete, handleSave, handleExit } from "
 
 //Controller class to manage the menu and operations
 export class MenuContoller {
-  private userManager: UserManager;
-  private userFactory: UserFactory;
+  private studentManager: StudentManager;
+  private studentFactory: StudentFactory;
   private dataSerializer: DataSerializer;
 
-  //Constructor initializes services and loads existing user data
+  //Constructor initializes services and loads existing student data
   constructor() {
-    this.userManager = UserManager.getInstance();
+    this.studentManager = StudentManager.getInstance();
     this.dataSerializer = DataSerializer.getInstance();
-    this.userFactory = new UserFactory();
+    this.studentFactory = new StudentFactory();
 
     this.initializeData();
   }
 
-  //Load saved user data from disk, else set it to an empty array
+  //Load saved student data from disk, else set it to an empty array
   private initializeData() {
     try {
-      const savedUserData = this.dataSerializer.loadDataFromDisk();
-      this.userManager.setUsers(savedUserData);
+      const savedStudentData = this.dataSerializer.loadDataFromDisk();
+      this.studentManager.setStudents(savedStudentData);
     } catch {
-      this.userManager.setUsers([]);
+      this.studentManager.setStudents([]);
     }
   }
 
-  //Displays the main menu and handles user choices in a loop
+  //Displays the main menu and handles student choices in a loop
   async showMenu(): Promise<void> {
     while (true) {
       Logger.print("\n\n----- MENU -----");
-      Logger.print("1. Add User");
-      Logger.print("2. Display Users");
-      Logger.print("3. Delete User");
-      Logger.print("4. Save Users");
+      Logger.print("1. Add Students");
+      Logger.print("2. Display Students");
+      Logger.print("3. Delete Students");
+      Logger.print("4. Save Students");
       Logger.print("5. Exit");
 
-      //Ask user for their menu choice
+      //Ask student for their menu choice
       const choice = await InputHandler.getChoice(); //Gets student choice.
 
-      //Perform action based on user's choice
+      //Perform action based on student's choice
       switch (choice) {
         case choices.ADD:
           try {
@@ -77,7 +77,7 @@ export class MenuContoller {
           return;
 
         default:
-          Logger.info("Invalid choice. Please try again."); //If user enters invalid option
+          Logger.info("Invalid choice. Please try again."); //If student enters invalid option
       }
     }
   }

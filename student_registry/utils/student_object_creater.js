@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserFactory = void 0;
+exports.StudentFactory = void 0;
 //Factory Class responsible for creatig student object
-var UserFactory = /** @class */ (function () {
-    function UserFactory() {
+var StudentFactory = /** @class */ (function () {
+    function StudentFactory() {
     }
-    UserFactory.prototype.createUser = function (fullName, age, address, rollNumber, courses) {
+    StudentFactory.prototype.createStudent = function (fullName, age, address, rollNumber, courses) {
         return {
             fullName: fullName.trim(),
             age: age,
@@ -14,6 +14,6 @@ var UserFactory = /** @class */ (function () {
             courses: courses,
         };
     };
-    return UserFactory;
+    return StudentFactory;
 }());
-exports.UserFactory = UserFactory;
+exports.StudentFactory = StudentFactory;

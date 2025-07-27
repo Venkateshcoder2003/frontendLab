@@ -39,57 +39,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InputHandler = void 0;
 //Import required modules
 var readline = require("readline");
-//Class responsible for handling all user inputs via command-line interface
+//Class responsible for handling all student inputs via command-line interface
 var InputHandler = /** @class */ (function () {
     function InputHandler() {
     }
-    //Asks a query and returns the user input
+    //Asks a query and returns the student input
     InputHandler.askQuery = function (query) {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
                 return [2 /*return*/, new Promise(function (resolve) {
-                        _this.rl.question(query, function (userInput) {
-                            resolve(userInput.trim());
+                        _this.rl.question(query, function (studentInput) {
+                            resolve(studentInput.trim());
                         });
                     })];
             });
         });
     };
-    //Collects and returns all user details (name, age, address, roll number, courses)
-    InputHandler.getUserInput = function () {
+    //Collects and returns all student details(name, age, address, roll number, courses)
+    InputHandler.getStudentInput = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var userInput, _a, _b, _c, _d, _e;
+            var studentInput, _a, _b, _c, _d, _e;
             return __generator(this, function (_f) {
                 switch (_f.label) {
                     case 0:
-                        userInput = {};
-                        _a = userInput;
+                        studentInput = {};
+                        _a = studentInput;
                         return [4 /*yield*/, this.askQuery("Enter Name: ")];
                     case 1:
                         _a.fullName = _f.sent();
-                        _b = userInput;
+                        _b = studentInput;
                         return [4 /*yield*/, this.askQuery("Enter Age: ")];
                     case 2:
                         _b.age = _f.sent();
-                        _c = userInput;
+                        _c = studentInput;
                         return [4 /*yield*/, this.askQuery("Enter Address: ")];
                     case 3:
                         _c.address = _f.sent();
-                        _d = userInput;
+                        _d = studentInput;
                         return [4 /*yield*/, this.askQuery("Enter Your Roll Number: ")];
                     case 4:
                         _d.rollNumber = _f.sent();
-                        _e = userInput;
+                        _e = studentInput;
                         return [4 /*yield*/, this.askQuery("Enter your Courses A-F (Comma Separated): ")];
                     case 5:
                         _e.courses = _f.sent();
-                        return [2 /*return*/, userInput];
+                        return [2 /*return*/, studentInput];
                 }
             });
         });
     };
-    //Asks the user to choose an option (typically from a menu)
+    //Asks the student to choose an option (typically from a menu)
     InputHandler.getChoice = function () {
         return __awaiter(this, void 0, void 0, function () {
             var input;
@@ -103,7 +103,7 @@ var InputHandler = /** @class */ (function () {
             });
         });
     };
-    //Asks user for the field by which they want to sort the data
+    //Asks student for the field by which they want to sort the data
     InputHandler.getSortField = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -111,7 +111,7 @@ var InputHandler = /** @class */ (function () {
             });
         });
     };
-    //Asks user to specify sorting order(ascending or descending)
+    //Asks student to specify sorting order(ascending or descending)
     InputHandler.getSortType = function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -119,7 +119,7 @@ var InputHandler = /** @class */ (function () {
             });
         });
     };
-    //Prompts the user with a yes/no question
+    //Prompts the student with a yes/no question
     InputHandler.getYesNoInput = function (question) {
         return __awaiter(this, void 0, void 0, function () {
             var input, choice;
@@ -134,7 +134,7 @@ var InputHandler = /** @class */ (function () {
             });
         });
     };
-    //Prompts the user to enter a roll number for deleting student record
+    //Prompts the student to enter a roll number for deleting student record
     InputHandler.getRollNumberForDelete = function (question) {
         return __awaiter(this, void 0, void 0, function () {
             var input;

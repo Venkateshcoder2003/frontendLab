@@ -41,31 +41,31 @@ exports.InputValidator = void 0;
 var course_1 = require("../models/course");
 var input_handler_1 = require("./input_handler");
 var logger_1 = require("./logger");
-//Class responsible for validating user input
+//Class responsible for validating student input
 var InputValidator = /** @class */ (function () {
     function InputValidator() {
     }
     //Validates all fields and returns fully validated data
-    InputValidator.validateAndGetUserData = function (userInput) {
+    InputValidator.validateAndGetStudentData = function (studentInput) {
         return __awaiter(this, void 0, void 0, function () {
             var validatedData;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         validatedData = {};
-                        return [4 /*yield*/, this.validateName(userInput.fullName || "", validatedData)];
+                        return [4 /*yield*/, this.validateName(studentInput.fullName || "", validatedData)];
                     case 1:
                         _a.sent();
-                        return [4 /*yield*/, this.validateAge(userInput.age || "", validatedData)];
+                        return [4 /*yield*/, this.validateAge(studentInput.age || "", validatedData)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.validateAddress(userInput.address || "", validatedData)];
+                        return [4 /*yield*/, this.validateAddress(studentInput.address || "", validatedData)];
                     case 3:
                         _a.sent();
-                        return [4 /*yield*/, this.validateRollNumber(userInput.rollNumber || "", validatedData)];
+                        return [4 /*yield*/, this.validateRollNumber(studentInput.rollNumber || "", validatedData)];
                     case 4:
                         _a.sent();
-                        return [4 /*yield*/, this.validateCourses(userInput.courses || "", validatedData)];
+                        return [4 /*yield*/, this.validateCourses(studentInput.courses || "", validatedData)];
                     case 5:
                         _a.sent();
                         return [2 /*return*/, validatedData];
@@ -241,7 +241,7 @@ var InputValidator = /** @class */ (function () {
                 inputCourses.push(toUpper);
             }
         }
-        //Number of courses should be 4
+        //Number of courses should be 4 
         if (inputCourses.length !== 4) {
             logger_1.Logger.info("Error: You must enter exactly 4 courses. You entered ".concat(inputCourses.length, "."));
             return null;
@@ -290,7 +290,7 @@ var InputValidator = /** @class */ (function () {
             return null;
         }
     };
-    //Validate user choice
+    //Validate student choice
     InputValidator.validateChoice = function (input) {
         var choice = parseInt(input.trim());
         return choice >= 1 && choice <= 5 ? choice : null;

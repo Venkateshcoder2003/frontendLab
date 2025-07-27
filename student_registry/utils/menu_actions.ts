@@ -1,22 +1,22 @@
-import { UserManager } from "../services/user_manager";
+import { StudentManager } from "../services/student_manager";
 import { DataSerializer } from "../services/data_serializer";
-import { UserFactory } from "../utils/user_factory";
+import { StudentFactory } from "../utils/student_object_creater";
 import { InputHandler } from "../utils/input_handler";
 import { InputValidator } from "../utils/input_validator";
 import { Logger } from "../utils/logger";
 import { choices } from "../models/choices";
 
-const userManager = UserManager.getInstance();
+const studentManager = StudentManager.getInstance();
 const dataSerializer = DataSerializer.getInstance();
-const userFactory = new UserFactory();
+const studentFactory = new StudentFactory();
 
-//Handles logic for adding a new user
+//Handles logic for adding a new student
 export async function handleAdd(): Promise<void> {
-  const userInput = await InputHandler.getUserInput(); //Get user Input
-  const validatedData = await InputValidator.validateAndGetUserData(userInput); //Validates user input
+  const studentInput = await InputHandler.getStudentInput(); //Get student Input
+  const validatedData = await InputValidator.validateAndGetStudentData(studentInput); //Validates student input
 
-  //Creates user object
-  const user = userFactory.createUser(
+  //Creates student object
+  const student = studentFactory.createStudent(
     validatedData.fullName,
     validatedData.age,
     validatedData.address,
@@ -24,17 +24,17 @@ export async function handleAdd(): Promise<void> {
     validatedData.courses
   );
 
-  //Add user to list, if successful then save data to disk
-  const addResult = userManager.addUser(user);
+  //Add student to list, if successful then save data to disk
+  const addResult = studentManager.addStudent(student);
   if (!addResult) {
-    dataSerializer.saveDataToDisk(userManager.getUsers());
-    Logger.info("User Added Successfully");
-    Logger.log(user);
+    dataSerializer.saveDataToDisk(studentManager.getStudents());
+    Logger.info("Student Added Successfully");
+    Logger.log(student);
   }
 }
 
 /**
- *Handles display of all user data.
+ *Handles display of all student data.
  * If custom sort is selected, asks for sort field and type
  * Otherwise, shows default sorting (by name and roll number)
  */
@@ -43,8 +43,8 @@ export async function handleDisplay(): Promise<void> {
     "Do you want to sort on data: "
   );
   if (wantCustomSort) {
-    const usersFromFile = dataSerializer.loadDataFromDisk();
-    if (usersFromFile.length === 0) {
+    const studentsFromFile = dataSerializer.loadDataFromDisk();
+    if (studentsFromFile.length === 0) {
       Logger.info("No Student Records found in the database.");
       return;
     }
@@ -67,30 +67,30 @@ export async function handleDisplay(): Promise<void> {
       return;
     }
 
-    //Perform custom sort and display users
-    userManager.sortUsersBy(
+    //Perform custom sort and display students
+    studentManager.sortStudentsBy(
       sortFieldValidation.value!,
       sortTypeValidation.value!
     );
     Logger.info(
       `Sorted by ${sortFieldValidation.value} in ${sortTypeValidation.value}.`
     );
-    userManager.displayUsers();
+    studentManager.displayStudents();
   } else {
-    const usersFromFile = dataSerializer.loadDataFromDisk();
-    if (usersFromFile.length === 0) {
+    const studentsFromFile = dataSerializer.loadDataFromDisk();
+    if (studentsFromFile.length === 0) {
       Logger.info("No Student Records found in the database.");
       return;
     }
     Logger.info(
       "Here is your data with default Sorting By Name and Roll Number: "
     );
-    userManager.setUsers(usersFromFile);
-    userManager.displayUsers();
+    studentManager.setStudents(studentsFromFile);
+    studentManager.displayStudents();
   }
 }
 
-//Handles deletion of a user by roll number
+//Handles deletion of a student by roll number
 export async function handleDelete(): Promise<void> {
   const rollNumberInput = await InputHandler.getRollNumberForDelete(
     "Enter Roll Number to Delete: "
@@ -104,27 +104,27 @@ export async function handleDelete(): Promise<void> {
     return;
   }
 
-  userManager.sortUsersBy();
-  const deleted = userManager.deleteUser(rollNumberValidation.value!);
-  dataSerializer.saveDataToDisk(userManager.getUsers());
+  studentManager.sortStudentsBy();
+  const deleted = studentManager.deleteStudent(rollNumberValidation.value!);
+  dataSerializer.saveDataToDisk(studentManager.getStudents());
 
   if (deleted) {
     Logger.info(
-      `User With Roll Number ${rollNumberValidation.value} Deleted Successfully`
+      `Student With Roll Number ${rollNumberValidation.value} Deleted Successfully`
     );
-    userManager.displayUsers();
+    studentManager.displayStudents();
   } else {
     Logger.info(
-      `User data with roll number ${rollNumberValidation.value} is Not Present`
+      `Student data with roll number ${rollNumberValidation.value} is Not Present`
     );
   }
 }
 
-//Handles saving all current user data to disk
+//Handles saving all current student data to disk
 export async function handleSave(): Promise<void> {
-  userManager.sortUsersBy();
-  dataSerializer.saveDataToDisk(userManager.getUsers());
-  Logger.info("User data Updated in Student Registry");
+  studentManager.sortStudentsBy();
+  dataSerializer.saveDataToDisk(studentManager.getStudents());
+  Logger.info("Student data Updated in Student Registry");
 }
 
 /**
@@ -138,8 +138,8 @@ export async function handleExit(): Promise<void> {
     "Do You Want To Save Data Before Exit: "
   );
   if (save) {
-    dataSerializer.saveDataToDisk(userManager.getUsers());
-    Logger.info("User Data saved.");
+    dataSerializer.saveDataToDisk(studentManager.getStudents());
+    Logger.info("Student Data saved.");
   }
   InputHandler.close();
 }

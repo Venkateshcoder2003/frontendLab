@@ -38,33 +38,33 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MenuContoller = void 0;
 //Import required classes and utility functions
-var user_manager_1 = require("../services/user_manager");
+var student_manager_1 = require("../services/student_manager");
 var data_serializer_1 = require("../services/data_serializer");
-var user_factory_1 = require("../utils/user_factory");
+var student_object_creater_1 = require("../utils/student_object_creater");
 var input_handler_1 = require("../utils/input_handler");
 var logger_1 = require("../utils/logger");
 var choices_1 = require("../models/choices");
 var menu_actions_1 = require("./menu_actions");
 //Controller class to manage the menu and operations
 var MenuContoller = /** @class */ (function () {
-    //Constructor initializes services and loads existing user data
+    //Constructor initializes services and loads existing student data
     function MenuContoller() {
-        this.userManager = user_manager_1.UserManager.getInstance();
+        this.studentManager = student_manager_1.StudentManager.getInstance();
         this.dataSerializer = data_serializer_1.DataSerializer.getInstance();
-        this.userFactory = new user_factory_1.UserFactory();
+        this.studentFactory = new student_object_creater_1.StudentFactory();
         this.initializeData();
     }
-    //Load saved user data from disk, else set it to an empty array
+    //Load saved student data from disk, else set it to an empty array
     MenuContoller.prototype.initializeData = function () {
         try {
-            var savedUserData = this.dataSerializer.loadDataFromDisk();
-            this.userManager.setUsers(savedUserData);
+            var savedStudentData = this.dataSerializer.loadDataFromDisk();
+            this.studentManager.setStudents(savedStudentData);
         }
         catch (_a) {
-            this.userManager.setUsers([]);
+            this.studentManager.setStudents([]);
         }
     };
-    //Displays the main menu and handles user choices in a loop
+    //Displays the main menu and handles student choices in a loop
     MenuContoller.prototype.showMenu = function () {
         return __awaiter(this, void 0, void 0, function () {
             var choice, _a, error_1, error_2;
@@ -73,10 +73,10 @@ var MenuContoller = /** @class */ (function () {
                     case 0:
                         if (!true) return [3 /*break*/, 18];
                         logger_1.Logger.print("\n\n----- MENU -----");
-                        logger_1.Logger.print("1. Add User");
-                        logger_1.Logger.print("2. Display Users");
-                        logger_1.Logger.print("3. Delete User");
-                        logger_1.Logger.print("4. Save Users");
+                        logger_1.Logger.print("1. Add Students");
+                        logger_1.Logger.print("2. Display Students");
+                        logger_1.Logger.print("3. Delete Students");
+                        logger_1.Logger.print("4. Save Students");
                         logger_1.Logger.print("5. Exit");
                         return [4 /*yield*/, input_handler_1.InputHandler.getChoice()];
                     case 1:
@@ -125,7 +125,7 @@ var MenuContoller = /** @class */ (function () {
                         _b.sent();
                         return [2 /*return*/];
                     case 16:
-                        logger_1.Logger.info("Invalid choice. Please try again."); //If user enters invalid option
+                        logger_1.Logger.info("Invalid choice. Please try again."); //If student enters invalid option
                         _b.label = 17;
                     case 17: return [3 /*break*/, 0];
                     case 18: return [2 /*return*/];
